@@ -1,2 +1,2 @@
-# transaction
-Helpers for transactional operations
+# Transaction
+Tools for transactional operations

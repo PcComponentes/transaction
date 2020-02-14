@@ -1,0 +1,33 @@
+{
+  "name": "pccomponentes/transaction",
+  "description": "Tools for transactional operations",
+  "authors": [
+    {
+      "name": "Jose Ramón Flores Munuera",
+      "email": "jose.flores@pccomponentes.com"
+    },
+    {
+      "name": "Sergio Hernández Martínez",
+      "email": "sergio.hernandez@pccomponentes.com"
+    }
+  ],
+  "license": "MIT",
+  "type": "library",
+  "autoload": {
+    "psr-4": {
+      "PcComponentes\\Transaction\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "PcComponentes\\Transaction\\Tests\\": "tests/"
+    }
+  },
+  "require": {
+    "php": "^7.4",
+    "symfony/messenger": "^4.4"
+  },
+  "require-dev": {
+    "pccomponentes/coding-standard": "^1.0"
+  }
+}
