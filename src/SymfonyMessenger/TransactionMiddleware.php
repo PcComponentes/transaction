@@ -3,52 +3,32 @@ declare(strict_types=1);
 
 namespace PcComponentes\Transaction\SymfonyMessenger;
 
+use PcComponentes\Transaction\Driver\TransactionalConnection;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Middleware\StackInterface;
-use PcComponentes\Transaction\Driver\TransactionalConnections;
 use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
 
 final class TransactionMiddleware implements MiddlewareInterface
 {
-    private TransactionalConnections $connections;
+    private TransactionalConnection $connection;
 
-    public function __construct(TransactionalConnections $connections)
+    public function __construct(TransactionalConnection $connection)
     {
-        $this->connections = $connections;
+        $this->connection = $connection;
     }
+
     public function handle(Envelope $envelope, StackInterface $stack): Envelope
     {
         try {
-            $this->beginTransaction();
+            $this->connection->beginTransaction();
             $envelope = $stack->next()->handle($envelope, $stack);
-            $this->commit();
+            $this->connection->commit();
 
             return $envelope;
         } catch (\Throwable $exception) {
-            $this->rollBack();
+            $this->connection->rollBack();
 
             throw $exception;
-        }
-    }
-
-    private function beginTransaction(): void
-    {
-        foreach ($this->connections as $connection) {
-            $connection->beginTransaction();
-        }
-    }
-
-    private function commit(): void
-    {
-        foreach ($this->connections as $connection) {
-            $connection->commit();
-        }
-    }
-
-    private function rollBack(): void
-    {
-        foreach ($this->connections as $connection) {
-            $connection->rollBack();
         }
     }
 }

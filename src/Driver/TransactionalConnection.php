@@ -5,7 +5,7 @@ namespace PcComponentes\Transaction\Driver;
 
 interface TransactionalConnection
 {
-    public function beginTransaction(): bool;
-    public function commit(): bool;
-    public function rollBack(): bool;
+    public function beginTransaction(): void;
+    public function commit(): void;
+    public function rollBack(): void;
 }

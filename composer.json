@@ -28,6 +28,8 @@
     "symfony/messenger": "^4.4"
   },
   "require-dev": {
-    "pccomponentes/coding-standard": "^1.0"
+    "pccomponentes/coding-standard": "^1.0",
+    "phpunit/phpunit": "^8.5",
+    "dg/bypass-finals": "^1.1"
   }
 }
