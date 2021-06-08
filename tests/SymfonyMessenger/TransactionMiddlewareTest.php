@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace PcComponentes\Transaction\Tests\SymfonyMessenger;
 
+use PcComponentes\Ddd\Application\Query;
 use PcComponentes\Transaction\Driver\TransactionalConnection;
 use PcComponentes\Transaction\SymfonyMessenger\TransactionMiddleware;
 use PHPUnit\Framework\TestCase;
@@ -105,6 +106,31 @@ final class TransactionMiddlewareTest extends TestCase
         $transactionMiddleware->handle(
             $this->createMock(Envelope::class),
             $stack
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function given_transactional_connection_when_handle_query_message_then_do_nothing()
+    {
+        $transactionalConnection = $this->createMock(TransactionalConnection::class);
+        $envelope = $this->createMock(Envelope::class);
+        $queryMessage = $this->createMock(Query::class);
+
+        $envelope
+            ->expects($this->once())
+            ->method('getMessage')
+            ->willReturn($queryMessage);
+
+        $transactionalConnection
+            ->expects($this->never())
+            ->method('beginTransaction');
+
+        $transactionMiddleware = new TransactionMiddleware($transactionalConnection);
+        $transactionMiddleware->handle(
+            $envelope,
+            $this->createMock(StackInterface::class)
         );
     }
 }
