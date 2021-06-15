@@ -21,7 +21,7 @@ final class TransactionMiddleware implements MiddlewareInterface
     public function handle(Envelope $envelope, StackInterface $stack): Envelope
     {
         if (\is_subclass_of($envelope->getMessage(), Query::class)) {
-            return $envelope;
+            return $stack->next()->handle($envelope, $stack);
         }
 
         try {
