@@ -3,10 +3,11 @@ declare(strict_types=1);
 
 namespace PcComponentes\Transaction\SymfonyMessenger;
 
+use PcComponentes\Ddd\Application\Query;
 use PcComponentes\Transaction\Driver\TransactionalConnection;
 use Symfony\Component\Messenger\Envelope;
-use Symfony\Component\Messenger\Middleware\StackInterface;
 use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
+use Symfony\Component\Messenger\Middleware\StackInterface;
 
 final class TransactionMiddleware implements MiddlewareInterface
 {
@@ -19,6 +20,10 @@ final class TransactionMiddleware implements MiddlewareInterface
 
     public function handle(Envelope $envelope, StackInterface $stack): Envelope
     {
+        if (\is_subclass_of($envelope->getMessage(), Query::class)) {
+            return $envelope;
+        }
+
         try {
             $this->connection->beginTransaction();
             $envelope = $stack->next()->handle($envelope, $stack);
