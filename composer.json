@@ -25,7 +25,8 @@
   },
   "require": {
     "php": "^7.4",
-    "symfony/messenger": "^4.4 || ^5.0"
+    "symfony/messenger": "^4.4 || ^5.0",
+    "pccomponentes/ddd": "^2.2"
   },
   "require-dev": {
     "pccomponentes/coding-standard": "^1.0",
