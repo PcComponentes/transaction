@@ -31,6 +31,10 @@ final class TransactionMiddleware implements MiddlewareInterface
 
             return $envelope;
         } catch (\Throwable $exception) {
+            if ($this->connection->isTransactionActive()) {
+                $this->connection->rollBack();
+            }
+
             $this->connection->rollBack();
 
             throw $exception;
