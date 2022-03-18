@@ -69,7 +69,7 @@ final class TransactionMiddlewareTest extends TestCase
     /**
      * @test
      */
-    public function given_next_middleware_throwing_exception_when_handle_then_rollback_transaction_and_throw_catch_exception()
+    public function given_next_middleware_throwing_exception_when_handle_and_connection_is_open_then_rollback_transaction_and_throw_catch_exception()
     {
         $transactionalConnection = $this->createMock(TransactionalConnection::class);
         $nextMiddleware = $this->createMock(MiddlewareInterface::class);
@@ -94,6 +94,12 @@ final class TransactionMiddlewareTest extends TestCase
             ->expects($this->never())
             ->method('commit')
         ;
+
+        $transactionalConnection
+            ->expects($this->once())
+            ->method('isTransactionActive')
+            ->willReturn(true);
+
         $transactionalConnection
             ->expects($this->once())
             ->method('rollback')

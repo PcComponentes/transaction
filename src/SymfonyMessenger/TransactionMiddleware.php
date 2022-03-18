@@ -35,8 +35,6 @@ final class TransactionMiddleware implements MiddlewareInterface
                 $this->connection->rollBack();
             }
 
-            $this->connection->rollBack();
-
             throw $exception;
         }
     }
