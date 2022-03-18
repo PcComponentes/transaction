@@ -8,4 +8,5 @@ interface TransactionalConnection
     public function beginTransaction(): void;
     public function commit(): void;
     public function rollBack(): void;
+    public function isTransactionActive(): bool;
 }
